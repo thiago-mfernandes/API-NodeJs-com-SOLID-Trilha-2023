@@ -9,11 +9,55 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+// SECTION Prisma - modo de uso
+// NOTE Renomear uma tabela: @@map
+// NOTE Configurar uma coluna: usar @...
+// NOTE Informaçoes no model que dizem respeito a relacionamentos não são salvas no BD. São apenas para o prisma relacionar as FK
 
 model User {
-  id    String @id @default(uuid())
-  name  String
-  email String @unique
-
-  @@map("users") //dois arrobas configura a tabela
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  password_hash String
+  created_at    DateTime  @default(now())
+  checkIns      CheckIn[] 
+  @@map("users") 
 }
+
+model CheckIn {
+  id           String    @id @default(uuid())
+  created_at   DateTime  @default(now())
+  validated_at DateTime?
+
+  user    User   @relation(fields: [user_id], references: [id])
+  // SECTION Como funciona o relacionamento no Prisma
+  // NOTE 1.campo user(nome do relacionamento) do tipo User
+  // NOTE 2. referencia o id da tabela (User)
+  // NOTE 3. com o campo user_id desta tabela(checkIn)
+  user_id String
+
+  gym   Gym    @relation(fields: [gym_id], references: [id])
+  gym_id String
+
+  @@map("check_ins")
+}
+
+model Gym {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  phone       String?
+  latitude    Decimal
+  longitude   Decimal
+  checkIns     CheckIn[]
+
+  @@map("gyms") // **tabela renomeada**
+}
+
+// SECTION Tipos de Relacionamento 
+
+// NOTE 1-1 => uma informacao que esta armazenada em uma tabela se relaciona com uma informacao de outra tabela. Provavelmente poderiam estar na mesma tabela.
+
+// NOTE 1-N => uma informacao que esta armazenada em uma tabela pode se relacionar com muitos registros armazenados em outras tabelas
+
+// NOTE N-N => um registro armazenado em uma tabela (A) pode relacionar-se com muitos registros em outras tabelas (B,C,D,E) e um registro de de outra tabela (B) pode se relacionar com muitos registros em outras tabelas (A,C,D,E)

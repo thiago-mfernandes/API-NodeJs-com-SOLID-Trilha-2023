@@ -1,20 +1,23 @@
 import 'dotenv/config'
 import { z } from 'zod'
-
-// process.env: { NODE_ENV: 'dev', ... }
+/**
+ * SECTION Variáveis de Ambiente
+ * NOTE recedo de dentro do process.env: { NODE_ENV: 'dev', ... } Um objeto
+ * 
+ * NOTE O metodo SafeParse tenta validar o objeto, e caso não consiga, lança um throw, parando a aplicação.
+ */
+// 
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
   PORT: z.coerce.number().default(3333),
 })
 
-// safeParse tenta validar as variaveis de ambiente;
 const _env = envSchema.safeParse(process.env)
 
 if (_env.success === false) {
-  console.error('❌ Invalid environment variables.', _env.error.format())
-  // lancando um throw, a aplicaçcão para a execução.
-  throw new Error('❌ Invalid environment variables.')
+  console.error('❌ Invalid environment variables.', _env.error.format());
+  throw new Error('❌ Invalid environment variables.');
 }
 
 export const env = _env.data // retorna as variaveis do schema validadas
