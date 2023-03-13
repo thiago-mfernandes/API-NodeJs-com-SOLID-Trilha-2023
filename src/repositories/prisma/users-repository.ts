@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { UsersRepositoryInterface } from "./users-repository-interface";
 
 /**
@@ -9,6 +9,10 @@ import { UsersRepositoryInterface } from "./users-repository-interface";
  */
 
 export class UsersRepository implements UsersRepositoryInterface {
+  
+  findById(id: string): Promise<User | null> {
+    throw new Error("Method not implemented.");
+  }
 
   async findByEmail(email: string) {
     //validar se existe um usuario com esse email e tratar o erro
