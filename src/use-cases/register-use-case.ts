@@ -1,4 +1,5 @@
 import { UsersRepositoryInterface } from "@/repositories/prisma/users-repository-interface";
+import { User } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
@@ -6,6 +7,10 @@ interface RegisterUseCaseRequest {
   name: string;
   email: string;
   password: string;
+}
+
+interface RegisterUseCaseResponse {
+  user: User;
 }
 
 /**
@@ -24,7 +29,7 @@ export class RegisterUseCase {
     email, 
     name, 
     password
-  } : RegisterUseCaseRequest) {
+  } : RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
     
     /**
      * SECTION Função Hash "bcryptjs" - como usar
@@ -41,10 +46,12 @@ export class RegisterUseCase {
   
     // const prismaUsersRepository = new PrismaUsersRepository();
   
-    await this.usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password_hash,
     })
+
+    return { user, };
   }
 }

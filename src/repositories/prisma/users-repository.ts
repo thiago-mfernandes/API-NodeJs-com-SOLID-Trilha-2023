@@ -8,7 +8,7 @@ import { UsersRepositoryInterface } from "./users-repository-interface";
  * NOTE Possui a responsabilidade única de comunicar-se com o banco de dados
  */
 
-export class PrismaUsersRepository implements UsersRepositoryInterface {
+export class UsersRepository implements UsersRepositoryInterface {
 
   async findByEmail(email: string) {
     //validar se existe um usuario com esse email e tratar o erro
