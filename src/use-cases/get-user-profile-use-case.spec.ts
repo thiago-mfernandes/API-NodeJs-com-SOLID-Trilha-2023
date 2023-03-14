@@ -33,7 +33,7 @@ describe("Get User Profile Use Case", () => {
   it("should not be able to get user profile with wrong id", async () => {
     //tentar com um email que nao existe, sem cadastrar nada
 
-    expect(() => sut.execute({
+    await expect(() => sut.execute({
       userId: 'non-existing-id'
     })).rejects.toBeInstanceOf(ResourceNotFoundError);
   });
