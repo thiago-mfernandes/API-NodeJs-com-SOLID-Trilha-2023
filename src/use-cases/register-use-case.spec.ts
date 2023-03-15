@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 import { beforeEach, describe, expect, it } from  "vitest";
 import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
-import { InMemoryUsersRepository } from "./in-memory/in-memory-users-repository";
+import { InMemoryUsersRepository } from "../repositories/in-memory/in-memory-users-repository";
 import { RegisterUseCase } from "./register-use-case";
 
 //essas variaveis let vao da visibilidade das intancias dentro dos testes

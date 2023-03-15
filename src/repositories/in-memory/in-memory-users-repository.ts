@@ -1,4 +1,4 @@
-import { UsersRepositoryInterface } from "@/repositories/prisma/users-repository-interface";
+import { UsersRepositoryInterface } from "@/repositories/users-repository";
 import { User, Prisma } from "@prisma/client";
 import { randomUUID } from "node:crypto";
 

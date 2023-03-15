@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma, User } from "@prisma/client";
-import { UsersRepositoryInterface } from "./users-repository-interface";
+import { Prisma } from "@prisma/client";
+import { UsersRepository } from "../users-repository";
 
 /**
  * SECTION Como Funciona o Repositório
@@ -8,21 +8,26 @@ import { UsersRepositoryInterface } from "./users-repository-interface";
  * NOTE Possui a responsabilidade única de comunicar-se com o banco de dados
  */
 
-export class UsersRepository implements UsersRepositoryInterface {
+export class PrismaUsersRepository implements UsersRepository {
   
-  findById(id: string): Promise<User | null> {
-    throw new Error("Method not implemented.");
+  async findById(id: string) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      }
+    })
+    return user;
   }
 
   async findByEmail(email: string) {
     //validar se existe um usuario com esse email e tratar o erro
-    const userWithSameEmail = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       }
     })
 
-    return userWithSameEmail;
+    return user;
   }
 
   async create(data: Prisma.UserCreateInput) {

@@ -1,15 +1,32 @@
-import { CheckInsRepository } from "@/repositories/prisma/check-ins-repository-interface";
+import { CheckInsRepository } from "@/repositories/check-ins-repository";
 import { Prisma, CheckIn } from "@prisma/client";
 import dayjs from "dayjs";
 import { randomUUID } from "node:crypto";
 
 export class InMemoryCheckInsRepository implements CheckInsRepository {
+    
   public items: CheckIn[] = [];
+
+  async countByUserId(userId: string) {
+    return this.items
+    .filter((item) => item.user_id ===userId).length
+  }
   
   async findManyByUserId(userId: string, page: number) {
     return this.items
     .filter((item) => item.user_id ===userId)
     .slice((page -1) * 20, page * 20) //pagina 5-1=4, 4*20=80. Comecar na pagina 80
+  }
+
+  async findById(id: string) {
+    // se mostrar erro de undefined, precisa salvar numa const, retornar null e depois retornar o valor pra respeitar a tipagem
+    const checkIn = this.items.find((item) => item.id === id);
+
+    if(!checkIn) {
+      return null;
+    }
+
+    return checkIn
   }
 
   async findByUserIdOnDate(userId: string, date: Date) {
@@ -44,6 +61,16 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     }
 
     this.items.push(checkIn);
+    return checkIn;
+  }
+
+  async save(checkIn: CheckIn){
+    const checkInIndex = this.items.findIndex((item) => item.id === checkIn.id);
+
+    if(checkInIndex >= 0) {
+      this.items[checkInIndex] = checkIn
+    }
+
     return checkIn;
   }
 

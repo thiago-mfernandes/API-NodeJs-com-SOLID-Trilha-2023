@@ -6,7 +6,7 @@ import { Prisma, User } from "@prisma/client";
  * NOTE Possui a responsabilidade única de definir quais serão os métodos implementados no repositório
  */
 
-export interface UsersRepositoryInterface {
+export interface UsersRepository {
 
   findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
