@@ -13,7 +13,8 @@ describe('Search Gyms (e2e)', () => {
   })
 
   it('should be able to search gyms by title', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    //parametro true indica que o usuario eh um admin, que eh o unico que pode validar um check-in
+    const { token } = await createAndAuthenticateUser(app, true)
 
     await request(app.server)
       .post('/gyms')

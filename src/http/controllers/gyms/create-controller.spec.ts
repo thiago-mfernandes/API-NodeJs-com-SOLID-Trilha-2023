@@ -13,7 +13,8 @@ describe('Create Gym (e2e)', () => {
   })
 
   it('should be able to create a gym', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    //parametro true indica que o usuario eh um admin, que eh o unico que pode validar um check-in
+    const { token } = await createAndAuthenticateUser(app, true)
 
     const response = await request(app.server)
       .post('/gyms')

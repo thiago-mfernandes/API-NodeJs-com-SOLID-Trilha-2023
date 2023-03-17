@@ -9,19 +9,28 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 // SECTION Prisma - modo de uso
 // NOTE Renomear uma tabela: @@map
 // NOTE Configurar uma coluna: usar @...
 // NOTE Informaçoes no model que dizem respeito a relacionamentos não são salvas no BD. São apenas para o prisma relacionar as FK
+
+// opcao numa lista
+enum Role {
+  ADMIN
+  MEMBER
+}
 
 model User {
   id            String    @id @default(uuid())
   name          String
   email         String    @unique
   password_hash String
+  role          Role      @default(MEMBER)
   created_at    DateTime  @default(now())
-  checkIns      CheckIn[] 
-  @@map("users") 
+  checkIns      CheckIn[]
+
+  @@map("users")
 }
 
 model CheckIn {
@@ -36,7 +45,7 @@ model CheckIn {
   // NOTE 3. com o campo user_id desta tabela(checkIn)
   user_id String
 
-  gym   Gym    @relation(fields: [gym_id], references: [id])
+  gym    Gym    @relation(fields: [gym_id], references: [id])
   gym_id String
 
   @@map("check_ins")
@@ -49,7 +58,7 @@ model Gym {
   phone       String?
   latitude    Decimal
   longitude   Decimal
-  checkIns     CheckIn[]
+  checkIns    CheckIn[]
 
   @@map("gyms") // **tabela renomeada**
 }
