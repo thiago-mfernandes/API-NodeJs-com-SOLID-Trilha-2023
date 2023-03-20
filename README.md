@@ -45,3 +45,6 @@ Resumo: Usuario faz login => a rota retorna um jwt
 
 esse jwt vai ser utilizado em todas as requisicoes dali em diante
 Header(cabecalho): Authorization: Bearer  JWT
+
+CI = Continuous Integration - processo de receber novos codigos no repositório
+CD - COntinous Deployment/Delivery
